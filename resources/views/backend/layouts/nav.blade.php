@@ -1,7 +1,8 @@
 <div class="dashboard-header">
     <nav class="navbar navbar-expand-lg bg-white fixed-top" style="color:black">
 
-        <a class="navbar-brand" href="#">Site name</a>
+        <a class="navbar-brand" href=""> <img src="{{ asset('backend/assets/images/logo.png') }}" alt="logo" style="max-height: 90px;max-width:120px;">
+        </a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -17,7 +18,7 @@
                 
                 <li class="nav-item dropdown nav-user">
                     <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="{{ asset('backend/assets') }}/images/add.png" alt="" class="user-avatar-md rounded-circle">
+                        <img src="{{ asset('backend/assets/images/user.png') }}" alt="" class="user-avatar-md rounded-circle">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink3">
                         <div class="nav-user-info">

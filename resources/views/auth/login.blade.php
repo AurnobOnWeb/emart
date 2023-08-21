@@ -37,11 +37,11 @@
         <div class="card ">
             <div class="card-header text-center">
               
-                <img src="" alt="logo" height="150" width="160">
+                <img src="{{ asset('backend/assets/images/logo.png') }}" alt="logo" style="max-height: 90px;max-width:120px;">
             
-            <span class="splash-description">Please enter your user information.</span>
-            <span class="splash-description">To enter</span>
-            <span class="splash-description">Name</span>
+            <span class="splash-description"><br>Please enter your Admin information.</span>
+            <span class="splash-description">To enter or</span>
+            <span class="splash-description"><del>Fuck Off</del> </span>
           
             </div>
             <div class="card-body">
