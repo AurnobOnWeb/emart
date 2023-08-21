@@ -1,6 +1,6 @@
 # Multi-Vendor Ecommerce Site
 
-![Project Logo](/public/backend/images/logo.png)
+![Project Logo](public/backend/assets/images/logo.png)
 
 Welcome to the Multi-Vendor Ecommerce Site repository! This project aims to provide a powerful and customizable platform for building a multi-vendor ecommerce website. Vendors can create their stores, list products, manage inventory, and customers can browse and shop from various vendors.
 
