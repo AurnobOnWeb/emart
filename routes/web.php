@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CateygoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -49,6 +50,11 @@ Route::group(['middleware' =>'preventBackHistory'],function(){
             //product Section
             Route::resource('product', ProductController::class);
             Route::post('/update-product-status', ProductController::class)->name('update.product.status');
+
+            // User Section
+            Route::resource('user', UserController::class);
+            Route::post('/update-user-status', UserController::class)->name('update.user.status');
+
 
     });
 });

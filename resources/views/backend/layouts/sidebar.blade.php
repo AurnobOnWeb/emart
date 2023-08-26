@@ -147,14 +147,14 @@
                         </div>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link " href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fa fa-fw fa-user-circle "></i>User Management <span class="badge badge-success">6</span></a>
-                        <div id="submenu-2" class="collapse submenu" style="">
+                        <a class="nav-link " href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-12" aria-controls="submenu-12"><i class="fa fa-fw fa-user-circle "></i>User Management <span class="badge badge-success">6</span></a>
+                        <div id="submenu-12" class="collapse submenu" style="">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" href=""><i class="fas fa-list-alt"> All Category</i></a>
+                                    <a class="nav-link" href="{{ route('user.index') }}"> All User</i></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href=""><i class="fas fa-plus-circle"> Add Category</i></a>
+                                    <a class="nav-link" href="{{ route('user.create') }}"> Add User</i></a>
                                 </li>
                             </ul>
                         </div>

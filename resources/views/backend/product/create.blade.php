@@ -43,29 +43,13 @@ E-mart | Create Product
                             <x-input type="number" name="stock" label="Stock" value="{{ old('stock') }}" ph="Enter Stock" id="ntg" require="required" />
                             <x-input type="number" name="price" label="price" value="{{ old('price') }}" ph="Enter price" id="price" require="required" />
                             <x-input type="number" name="discount" label="Discount" value="{{ old('discount') }}" ph="Enter Discount" id="discount" require="n" />
-
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Brand</label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <select class="selectpicker" data-live-search="true"  name="brand_id">
-                                        <option value="">-- Select Condition --</option>
-                                        @foreach(\App\Models\Brands::get() as $item)
-                                        <option value="{{ $item->id }}" {{ old('brand_id')==$item->id ? 'selected' :'' }} >{{ $item->title }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error( 'brand_id' )
-                                    <br>
-                                    <span style="color: red">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right">Category</label>
-                                <div class="col-12 col-sm-8 col-lg-6">
+                                <div class="col-sm-4 col-lg-3 mb-3 mb-sm-0">
                                     <select class="selectpicker" data-live-search="true" required="" name="cat_id" id="cat_id">
                                         <option value="">-- Select Category --</option>
                                         @foreach(\App\Models\Category::where('is_parent','1')->get() as $item)
-                                        <option value="{{ $item->id }}" {{ old('cat_id')==$item->id ? 'selected' :'' }} >{{ $item->title }}</option>
+                                        <option value="{{ $item->id }}" {{ old('cat_id')==$item->id ? 'selected' :'' }}>{{ $item->title }}</option>
                                         @endforeach
                                     </select>
                                     @error( 'cat_id' )
@@ -73,11 +57,8 @@ E-mart | Create Product
                                     <span style="color: red">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            </div>
-                            <div class="form-group row d-none " id="child_cat_div">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Child Category</label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <select class="form-control"  name="child_cat_id" id="child_cat_id">
+                                <div class="col-sm-4 col-lg-3 d-none"  id="child_cat_div">
+                                    <select class="form-control" name="child_cat_id" id="child_cat_id">
                                         <option value="">--- Child Category ---</option>
                                     </select>
                                     @error('child_cat_id')
@@ -86,15 +67,26 @@ E-mart | Create Product
                                     @enderror
                                 </div>
                             </div>
-                            
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Size</label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <select class="selectpicker"  name="size">
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Brand</label>
+                                <div class="col-sm-4 col-lg-3 mb-3 mb-sm-0">
+                                    <select class="selectpicker" data-live-search="true" name="brand_id">
+                                        <option value="">-- Select Brand --</option>
+                                        @foreach(\App\Models\Brands::get() as $item)
+                                        <option value="{{ $item->id }}" {{ old('brand_id')==$item->id ? 'selected' :'' }}>{{ $item->title }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error( 'brand_id' )
+                                    <br>
+                                    <span style="color: red">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-sm-4 col-lg-3" >
+                                    <select class="selectpicker" name="size">
                                         <option value="">-- Select Size --</option>
-                                        <option value="S" {{ old('condition')=='S' ? 'selected' :'' }}>Small</option>
-                                        <option value="M" {{ old('condition')=='M' ? 'selected' :'' }}>Medium</option>
-                                        <option value="L" {{ old('condition')=='L' ? 'selected' :'' }}>Large</option>
+                                        <option value="S" {{ old('size')=='S' ? 'selected' :'' }}>Small</option>
+                                        <option value="M" {{ old('size')=='M' ? 'selected' :'' }}>Medium</option>
+                                        <option value="L" {{ old('size')=='L' ? 'selected' :'' }}>Large</option>
                                     </select>
                                     @error( 'size' )
                                     <br>
@@ -104,8 +96,8 @@ E-mart | Create Product
                             </div>
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right">Condition</label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <select class="selectpicker"  name="condition">
+                                <div class="col-sm-4 col-lg-3 mb-3 mb-sm-0">
+                                    <select class="selectpicker" name="condition">
                                         <option value="">-- Select Condition --</option>
                                         <option value="new" {{ old('condition')=='new' ? 'selected' :'' }}>New</option>
                                         <option value="popular" {{ old('condition')=='popular' ? 'selected' :'' }}>Popular</option>
@@ -117,47 +109,19 @@ E-mart | Create Product
                                     <span style="color: red">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Vendor</label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <select class="selectpicker" data-live-search="true" name="vendor_id">
-                                        <option value="">-- Select Vendor --</option>
-                                        @foreach(\App\Models\User::where('role','vendor')->get() as $item)
-                                        <option value="{{ $item->id }}" {{ old('vendor_id')==$item->id ? 'selected' :'' }}>{{ $item->full_name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error( 'vendor_id' )
-                                    <br>
-                                    <span style="color: red">{{ $message }}</span>
-                                    @enderror
+                                <div class="col-sm-4 col-lg-3" >
+                                        <select class="selectpicker" data-live-search="true" name="vendor_id">
+                                            <option value="">-- Select Vendor --</option>
+                                            @foreach(\App\Models\User::where('role','vendor')->get() as $item)
+                                            <option value="{{ $item->id }}" {{ old('vendor_id')==$item->id ? 'selected' :'' }}>{{ $item->full_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error( 'vendor_id' )
+                                        <br>
+                                        <span style="color: red">{{ $message }}</span>
+                                        @enderror
                                 </div>
                             </div>
-
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Image Photo</label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="file" name="image" id="imageInput" required>
-                                    @error( 'image' )
-                                    <br>
-                                    <span style="color: red">{{ $message }}</span>
-                                    @enderror
-                                    <br>
-                                    <br>
-                                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12" id="imagePreviewContainer" style="display: none;">
-                                        <div class="card card-figure">
-                                            <figure class="figure">
-                                                <div class="figure-attachment">
-                                                    <img class="img" id="imagePreview" alt="Uploaded Image" style="max-height:190px; max-width:250px">
-                                                </div>
-                                            </figure>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
                            
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right">Status</label>
@@ -173,6 +137,91 @@ E-mart | Create Product
                                     @enderror
                                 </div>
                             </div>
+                         
+                            <div class="form-group row" id="img">
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right"> Product Photo 1 </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <input type="file" name="photo" id="imageInput1" required>
+                                    <a class="btn btn-space btn-success " style="color: white; margin-left: 10px;" id="addMore" >+</a>
+                                    <a class="btn btn-space btn-danger d-none " style="color: white; margin-left: 10px" id="remove">-</a>
+
+                                    @error( 'photo' )
+                                    <br>
+                                    <span style="color: red">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+                            </div>
+                            <div class="form-group row d-none" id="img2">
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Photo 2</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <input type="file" name="photoTwo" id="imageInput2" >
+                                    @error( 'photoTwo' )
+                                    <br>
+                                    <span style="color: red">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+                            </div>
+                            <div class="form-group row d-none" id="img3">
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Photo 3</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <input type="file" name="photothree" id="imageInput3" >
+                                    @error( 'photothree' )
+                                    <br>
+                                    <span style="color: red">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row d-none imagePreviewContainer" id="imagePreviewContainer">
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Selected Picture</label>
+                                <div class="col-6 col-sm-8 col-lg-6">
+                                    <div class="row">
+                                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+                                            <div class="card card-figure">
+                                                <figure class="figure">
+                                                    <div class="figure-attachment">
+                                                        <img class="img" id="imagePreview1" alt="Uploaded Image" style="max-height:200px; max-width:220px;">
+                                                    </div>
+                                                    <figcaption class="figure-caption">
+                                                        <h6 class="figure-title"> First Image </h6>
+                                                        <a id="remove1" class="btn btn-light" style="float: right; color:black; "> <i class="fas fa-window-close"></i></a>
+                                                    </figcaption>
+                                                </figure>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12 d-none" id="images2">
+                                            <div class="card card-figure">
+                                                <figure class="figure">
+                                                    <div class="figure-attachment">
+                                                        <img class="img " id="imagePreview2" alt="Uploaded Image" style="max-height:200px; max-width:220px;">
+                                                    </div>
+                                                    <figcaption class="figure-caption">
+                                                        <h6 class="figure-title"> Second Image </h6>
+                                                        <a id="remove2" class="btn btn-light" style="float: right; color:black; "> <i class="fas fa-window-close"></i></a>
+                                                    </figcaption>
+                                                </figure>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12 d-none" id="images3">
+                                            <div class="card card-figure">
+                                                <figure class="figure">
+                                                    <div class="figure-attachment">
+                                                        <img class="img" id="imagePreview3" alt="Uploaded Image" style="max-height:200px; max-width:220px;">
+                                                    </div>
+                                                    <figcaption class="figure-caption">
+                                                        <h6 class="figure-title"> Third Image </h6>
+                                                        <h6 class="figure-title" style="float: left;"><i>X</i></h6>
+                                                        <a id="remove3" class="btn btn-light" style="float: right; color:black; "> <i class="fas fa-window-close"></i></a>
+
+                                                    </figcaption>
+                                                </figure>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           
                             <div class="form-group row text-right">
                                 <div class="col col-sm-10 col-lg-9 offset-sm-1 offset-lg-0">
                                     <button type="submit" class="btn btn-space btn-primary">Submit</button>
@@ -188,70 +237,152 @@ E-mart | Create Product
             <!-- ============================================================== -->
         </div>
     </div>
-
     <script>
-        const imageInput = document.getElementById('imageInput');
-        const imagePreview = document.getElementById('imagePreview');
+        document.addEventListener("DOMContentLoaded", function() {
+         let imageCounter = 1;
+
+    const addMoreButton = document.getElementById("addMore");
+    const image2 = document.getElementById("img2");
+    const image3 = document.getElementById("img3");
+    const btn1 = document.getElementById("remove");
+
+    addMoreButton.addEventListener("click", function() {
+        if (imageCounter === 1) {
+        image2.classList.remove('d-none');
+        btn1.classList.remove('d-none');
+        } else if (imageCounter === 2) {
+        image3.classList.remove('d-none');
+        }else{
+            addMoreButton.style.pointerEvents="none";
+            addMoreButton.style.cursor="default";
+            addMoreButton.textContent = "Max Images Reached";
+            alert("You can't add more than 3 images.");
+            imageCounter=2;
+        }
+        imageCounter++;
+        console.log(imageCounter);
+    });
+
+    btn1.addEventListener("click", function() {
+        if (imageCounter === 3) {
+        image3.classList.add('d-none');
+        addMoreButton.style.pointerEvents="auto";
+        addMoreButton.style.cursor="pointer";
+        addMoreButton.textContent = "+";
+        } else if (imageCounter === 2) {
+         image2.classList.add('d-none');
+         btn1.classList.add('d-none');
+        }
+        imageCounter--;
+            });
+           });
+    </script>
+    <script>
+        const imageInput1 = document.getElementById('imageInput1');
+        const imagePreview1 = document.getElementById('imagePreview1');
+        const imageInput2 = document.getElementById('imageInput2');
+        const imagePreview2 = document.getElementById('imagePreview2');
+        const imageInput3 = document.getElementById('imageInput3');
+        const imagePreview3 = document.getElementById('imagePreview3');
         const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        const img2 = document.getElementById('images2');
+        const img3 = document.getElementById('images3');
+        const clearButton1 = document.getElementById('remove1');
+        const clearButton2 = document.getElementById('remove2');
+        const clearButton3 = document.getElementById('remove3');
 
-        imageInput.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                const reader = new FileReader();
+        // FUNCTION OF GETTING VIEW IMAGE
 
-                reader.onload = function(e) {
-                    imagePreview.src = e.target.result;
-                    imagePreviewContainer.style.display = 'block';
-                };
+        function setupImageInput(inputElement, previewElement, containerElement) {
+            inputElement.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
 
-                reader.readAsDataURL(this.files[0]);
-            }
+                    reader.onload = function(e) {
+                        previewElement.classList.remove('d-none');
+                        previewElement.src = e.target.result;
+                        containerElement.classList.remove('d-none');
+                    };
+
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        }
+
+        setupImageInput(imageInput1, imagePreview1, imagePreviewContainer);
+        setupImageInput(imageInput2, imagePreview2, img2);
+        setupImageInput(imageInput3, imagePreview3, img3);
+
+      
+        // Add a click event listener to the clear button
+        clearButton1.addEventListener('click', () => {
+            // Reset the value of the file input, effectively clearing the selected file
+            imageInput1.value = '';
+            imagePreview1.classList.add('d-none');
+
+        });
+        clearButton2.addEventListener('click', () => {
+            // Reset the value of the file input, effectively clearing the selected file
+            imageInput2.value = '';
+            img2.classList.add('d-none');
+
+        });
+        clearButton3.addEventListener('click', () => {
+            // Reset the value of the file input, effectively clearing the selected file
+            imageInput3.value = '';
+            img3.classList.add('d-none');
+
+        });
+
+       
+            </script>
+
+           
+            <script>
+        $(document).ready(function() {
+            $('#cat_id').change(function() {
+                var cat_id = $(this).val();
+
+                if (cat_id !== "") {
+                    $.ajax({
+                        url: "/admin/category/" + cat_id + "/child"
+                        , type: "POST"
+                        , data: {
+                            _token: "{{ csrf_token() }}"
+                            , cat_id: cat_id
+                        }
+                        , success: function(response) {
+                            var childCatDropdown = $('#child_cat_id');
+                            childCatDropdown.empty(); // Clear existing options
+
+                            if (response.status && response.data.length > 0) {
+                                $('#child_cat_div').removeClass('d-none');
+
+                                // Append each child category option to the dropdown
+                                $.each(response.data, function(index, category) {
+                                    childCatDropdown.append($('<option>', {
+                                        value: category.id
+                                        , text: category.title
+                                    }));
+                                });
+                            } else {
+                                $('#child_cat_div').addClass('d-none');
+                            }
+                        }
+                        , error: function(xhr, status, error) {
+                            console.error(error); // Log any errors for debugging
+                        }
+                    });
+                } else {
+                    $('#child_cat_div').addClass('d-none');
+                    $('#child_cat_id').empty(); // Clear child category dropdown
+                }
+            });
         });
 
     </script>
-   <script>
-    $(document).ready(function () {
-        $('#cat_id').change(function () {
-            var cat_id = $(this).val();
 
-            if (cat_id !== "") {
-                $.ajax({
-                    url: "/admin/category/" + cat_id + "/child",
-                    type: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        cat_id: cat_id
-                    },
-                    success: function (response) {
-                        var childCatDropdown = $('#child_cat_id');
-                        childCatDropdown.empty(); // Clear existing options
 
-                        if (response.status && response.data.length > 0) {
-                            $('#child_cat_div').removeClass('d-none');
-
-                            // Append each child category option to the dropdown
-                            $.each(response.data, function (index, category) {
-                                childCatDropdown.append($('<option>', {
-                                    value: category.id,
-                                    text: category.title
-                                }));
-                            });
-                        } else {
-                            $('#child_cat_div').addClass('d-none');
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(error); // Log any errors for debugging
-                    }
-                });
-            } else {
-                $('#child_cat_div').addClass('d-none');
-                $('#child_cat_id').empty(); // Clear child category dropdown
-            }
-        });
-    });
-</script>
-
-    
     @include('backend.layouts.foot')
 </div>
 @endsection

@@ -52,7 +52,7 @@ class CateygoryController extends Controller
     public function store(Request $request)
     {
        $this->validate($request,[
-        'title'=> 'string|required',
+        'title'=> 'string|required|unique:categories,title',
         'summary'=> 'string|nullable',
         'is_parent'=> 'sometimes|in:1' ,
         'parent_id'=> 'nullable',
@@ -126,39 +126,44 @@ class CateygoryController extends Controller
     public function update(Request $request, $id)
     {  
         $category =Category::find($id);
+        if($category){
             $this->validate($request,[
-            'title'=> 'string|required',
-            'summary'=> 'string|nullable',
-            'is_parent'=> 'sometimes|in:1' ,
-            'parent_id'=> 'nullable|',
-            'status'=> 'nullable|in:Active,Inactive',
-             ]);
-          
-             $data = $request->all();
-            //image
-             $image =$request->image;
-             if($image){
-                $imageName = time().'.'.$image->getClientOriginalExtension();
-                $request->image->move('backend/assets/images', $imageName);
-                $data['photo'] =$imageName;
-
-             }
-             if($request->is_parent == 1){
-                  $data['parent_id'] = null;
-                  $data['is_parent'] = 1;
-
-             }else{
-                $data['parent_id'] = $request->parent_id;
-                $data['is_parent'] = 0;
-             }
-             
-             $status = $category->fill($data)->save();
-             if($status){
-                return redirect()->route('category.index')->with('massage', 'Category successfully updated');
-             }else{
-                return redirect()->back()->with('message','Something went Wrpng');
+                'title'=> 'string|required|exists:categories,title',
+                'summary'=> 'string|nullable',
+                'is_parent'=> 'sometimes|in:1' ,
+                'parent_id'=> 'nullable|',
+                'status'=> 'nullable|in:Active,Inactive',
+                 ]);
+              
+                 $data = $request->all();
+                //image
+                 $image =$request->image;
+                 if($image){
+                    $imageName = time().'.'.$image->getClientOriginalExtension();
+                    $request->image->move('backend/assets/images', $imageName);
+                    $data['photo'] =$imageName;
     
-             }
+                 }
+                 if($request->is_parent == 1){
+                      $data['parent_id'] = null;
+                      $data['is_parent'] = 1;
+    
+                 }else{
+                    $data['parent_id'] = $request->parent_id;
+                    $data['is_parent'] = 0;
+                 }
+                 
+                 $status = $category->fill($data)->save();
+                 if($status){
+                    return redirect()->route('category.index')->with('massage', 'Category successfully updated');
+                 }else{
+                    return redirect()->back()->with('message','Something went Wrpng');
+                 }
+        }else{
+            return redirect()->back()->with('message','Not Found');
+
+        }
+          
     }
 
     /**
@@ -175,20 +180,32 @@ class CateygoryController extends Controller
         if (!$category) {
             return redirect()->back()->with('message', 'Category not found');
         } else {
-           // Delete the category object from the database
-            $status =$category->delete();
-            $photoPath = public_path('backend/assets/images/' . $category->photo);
-        
-            // Delete the associated photo file from the directory
-            if (file_exists($photoPath)) {
-                unlink($photoPath);
-            }
-            if($status){
-                if(count($child_cat_id)>0){
-                    Category::shiftChild($child_cat_id);
+
+        if($category->photo){
+                        // Delete the category object from the database
+                        $status =$category->delete();
+                        $photoPath = public_path('backend/assets/images/' . $category->photo);
+
+                        // Delete the associated photo file from the directory
+                        if (file_exists($photoPath)) {
+                            unlink($photoPath);
+                        }
+                        if($status){
+                            if(count($child_cat_id)>0){
+                                Category::shiftChild($child_cat_id);
+                            }
+                        }
+                        return redirect()->route('category.index')->with('message', 'Category and photo successfully Deleted ');
+            }else{
+                $status =$category->delete();
+                if($status){
+                    if(count($child_cat_id)>0){
+                        Category::shiftChild($child_cat_id);
+                    }
                 }
+                return redirect()->route('category.index')->with('message', 'Category successfully Deleted ');
             }
-            return redirect()->route('category.index')->with('message', 'Category and photo successfully Deleted ');
+          
         }
     }
 

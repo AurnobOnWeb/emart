@@ -124,39 +124,44 @@ class BannerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $validate = $request->validate([
-            'title'=>'required',
-            'description'=>'required',
-            'image'=>'nullable|mimes:jpeg,png,jpg|file|max:2048',
-            'condition'=>'required',
-            'status'=>'required',
-        ]);
+    {  
+         $banner = Banner::find($id);
+         if($banner){
 
-        if($image =$request->image){ 
-            $imageName = time().'.'.$image->getClientOriginalExtension();
-            $request->image->move('backend/assets/images', $imageName);
-        }
-            
-            $banner = Banner::find($id);
+            $validate = $request->validate([
+                'title'=>'required',
+                'description'=>'required',
+                'image'=>'nullable|mimes:jpeg,png,jpg|file|max:2048',
+                'condition'=>'required',
+                'status'=>'required',
+            ]);
 
-        if (!$banner) {
-            return redirect()->back()->with('message', 'Banner not found');
-        }else{
-            $banner->title = $validate['title'];
-            $banner->description = $validate['description'];
-            $banner->condition = $validate['condition'];
-            $banner->status = $validate['status'];
-        
-            if (!empty($imageName)) {
-                $banner->photo = $imageName;
+            if($image =$request->image){ 
+                $imageName = time().'.'.$image->getClientOriginalExtension();
+                $request->image->move('backend/assets/images', $imageName);
             }
-            $banner->save();
-            return redirect()->route('banner.index')->with('massage', 'Banner successfully updated');
-        }
+            
+                $banner->title = $validate['title'];
+                $banner->description = $validate['description'];
+                $banner->condition = $validate['condition'];
+                $banner->status = $validate['status'];
+            
+                if (!empty($imageName)) {
+                    $banner->photo = $imageName;
+                }
+                $status =$banner->save();
+                if($status){
+                return redirect()->route('banner.index')->with('massage', 'Banner successfully updated');
+                 }else{
+                    return redirect()->back()->with('message','Something went Wrong');
+                 }
+         }else{
+            return redirect()->back()->with('message', 'Banner not found');
+         }
+      }
       
        
-    }
+   
 
     /**
      * Remove the specified resource from storage.
@@ -171,17 +176,24 @@ class BannerController extends Controller
         if (!$banner) {
             return redirect()->back()->with('message', 'Banner not found');
         } else {
-            $photoPath = public_path('backend/assets/images/' . $banner->photo);
+            if($banner->photo){
+                $photoPath = public_path('backend/assets/images/' . $banner->photo);
         
-            // Delete the associated photo file from the directory
-            if (file_exists($photoPath)) {
-                unlink($photoPath);
+                // Delete the associated photo file from the directory
+                if (file_exists($photoPath)) {
+                    unlink($photoPath);
+                }
+            
+                // Delete the banner object from the database
+                $banner->delete();
+            
+                return redirect()->route('banner.index')->with('message', 'Banner and photo successfully Deleted');
             }
-        
-            // Delete the banner object from the database
-            $banner->delete();
-        
-            return redirect()->route('banner.index')->with('message', 'Banner and photo successfully Deleted');
+            else{
+                $banner->delete();
+            
+                return redirect()->route('banner.index')->with('message', 'Banner successfully Deleted');
+            }
         }
         
     }

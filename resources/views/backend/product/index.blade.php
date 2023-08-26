@@ -70,7 +70,7 @@ E-mart | Show All Product
                                         <td> <img src="{{ url('backend/assets/images/',$item->photo) }}" alt="Product-photo" style="max-height: 90px; max-width:120px;"></td>
                                         <td>{{ number_format($item->price, 2) }} Tk</td>
                                         <td>{{ $item->discount }} %</td>
-                                        <td>{{ number_format($item->price, 2) }} Tk</td>
+                                        <td>{{ number_format($item->offer_price, 2) }} Tk</td>
                                         <td>{{ $item->stock }}</td>
 
                                         <td>{{ \App\Models\User::where('id',$item->vendor_id)->value('full_name') }}</td>
@@ -80,7 +80,7 @@ E-mart | Show All Product
                                             @elseif($item->condition == 'winter')
                                             <span class="badge badge-info">Winter</span>
                                             @elseif($item->condition == 'new')
-                                             <span class="badge badge-success">New</span>
+                                            <span class="badge badge-success">New</span>
                                             @else
                                             <span class="badge badge-brand">Popular</span>
                                             @endif
@@ -89,14 +89,14 @@ E-mart | Show All Product
                                             <input type="checkbox" name="toggle" {{ $item->status == 'Active' ? 'checked' : '' }} data-toggle="toggle" value="{{ $item->id }}" data-on="Active" data-off="Inactive" data-onstyle="primary" data-offstyle="danger">
                                         </td>
                                         <td>
-                                            
-                                            <a href="" type="button"  title="Delete" class="btn btn-outline-success" data-toggle="modal" data-target="#showmodal{{ $item->id }}">
+
+                                            <a href="" type="button" title="Delete" class="btn btn-outline-success" data-toggle="modal" data-target="#showmodal{{ $item->id }}">
                                                 <i class="fa fa-eye"></i>
-                                            <a href="{{ route('product.edit',$item->id) }}" class="btn btn-outline-primary" style="margin: 5px" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                <i class="fas fa-pencil-alt" aria-hidden="true"></i></a>
-                                            <a href="" type="button"  title="Delete" class="btn btn-outline-danger" data-toggle="modal" data-target="#myModal{{ $item->id }}">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
+                                                <a href="{{ route('product.edit',$item->id) }}" class="btn btn-outline-primary" style="margin: 5px" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                    <i class="fas fa-pencil-alt" aria-hidden="true"></i></a>
+                                                <a href="" type="button" title="Delete" class="btn btn-outline-danger" data-toggle="modal" data-target="#myModal{{ $item->id }}">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
                                         </td>
                                         @endforeach
                                     </tr>
@@ -108,80 +108,6 @@ E-mart | Show All Product
             </div>
         </div>
     </div>
-    @foreach($product as $item)
-    <div class="modal fade" id="showmodal{{ $item->id }}">
-        <div class="modal-dialog">
-                <!-- Modal Header -->
-               
-                <!-- Modal body -->
-                <div class="modal-body" >
-                        <div class="product" style="background-color:white " >
-                          
-                            <div class="popup-card" style="background-color:white ">
-                              <div class="product-img">
-                                <img src="{{ url('backend/assets/images/',$item->photo) }}" alt="" height="250px" width="320px">
-                              </div>
-                              <div class="info">
-                                <h2>{{ $item->title }}<br>
-                                    <br>
-                                    <span> Category : {{ \App\Models\Category::where('id',$item->cat_id)->value('title') }}</span><br>
-                                    <span>  Child Category : {{ \App\Models\Category::where('id',$item->child_cat_id)->value('title') }}</span><br>                
-                                    <span> Brand : {{ \App\Models\Brands::where('id',$item->brand_id)->value('title') }}</span>
-                                    <span> Slug : {{ $item->slug }}</span>
-                                    <br>
-                                    <span> Stock : {{ $item->stock }}</span></h2>
-                                </h2>
-                                <p><h4><b style="color: black">Summary </b></h4>- {{ $item->summary }}</p>
-                                <p><h4><b style="color: black">Description </b></h4>- {{ $item->description }}</p>
-
-                                 <h3>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            Price <br><del> {{ $item->price }}</del> Tk
-                                        </div>
-                                        <div class="col-md-4">
-                                            Discount {{ $item->discount }} %
-                                        </div>
-                                        <div class="col-md-4">
-                                            OfferPrice {{ $item->offer_price }} Tk
-                                        </div>
-                                    </div>
-                                 </h3>
-                                 <h3>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            Size <br><span class="badge badge-success">{{ $item->size }}</span>
-                                        </div>
-                                        <div class="col-md-4">
-                                            Condition <br>   @if($item->condition == 'summar')
-                                            <span class="badge badge-primary">Summer</span>
-                                            @elseif($item->condition == 'winter')
-                                            <span class="badge badge-info">Winter</span>
-                                            @elseif($item->condition == 'new')
-                                             <span class="badge badge-success">New</span>
-                                            @else
-                                            <span class="badge badge-brand">Popular</span>
-                                            @endif
-                                        </div>
-                                        <div class="col-md-4">
-                                            OfferPrice  @if($item->status == 'Active')
-                                            <span class="badge badge-primary">Active</span>
-                                            @else($item->status == 'Inactive')
-                                            <span class="badge badge-info">Inactive</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                 </h3>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                </div>
-                              </div>
-                            </div>
-                        </div>  
-                </div>   
-        </div>
-    </div>
-    @endforeach
 
 
     @foreach($product as $item)
@@ -197,8 +123,8 @@ E-mart | Show All Product
                 <div class="modal-body">
                     {{ $item->title }}
                     <br>
-                    Are You Sure ?  
-                     <br>If you delete the data, you will not able to recover the data
+                    Are You Sure ?
+                    <br>If you delete the data, you will not able to recover the data
                 </div>
                 <!-- Modal footer -->
                 <div class="modal-footer">
@@ -212,32 +138,183 @@ E-mart | Show All Product
             </div>
         </div>
     </div>
- @endforeach
+    @endforeach
 
+
+    @foreach($product as $item)
+    <div class="modal fade bd-example-modal-lg" id="showmodal{{ $item->id }}">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal Header -->
+            <div style="background-color:white">
+                <div class="modal-body">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-10 mt-4 ">
+                        <div class="card card-fluid">
+                            <!-- .card-body -->
+                            <div class="card-body text-center">
+                                <!-- .user-avatar -->
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <img src="{{ url('backend/assets/images/',$item->photo) }}" alt="User Avatar" class="img-thumbnail mr-3" style="max-height: 150px; max-width:180px;">
+
+                                        </div>
+                                        <div class="col-sm">
+                                            <img src="{{ url('backend/assets/images/',$item->photoTwo) }}" alt="User Avatar" class="img-thumbnail mr-3" style="max-height: 150px; max-width:180px;">
+
+                                        </div>
+                                        <div class="col-sm">
+                                            <img src="{{ url('backend/assets/images/',$item->photothree) }}" alt="User Avatar" class="img-thumbnail mr-3" style="max-height: 150px; max-width:180px;">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.user-avatar -->
+                                <h3 class="card-title mb-2 text-truncate">
+                                    <br>
+                                    Product name - {{ $item->title }}
+                                </h3>
+                                <h6 class="card-subtitle text-muted mb-3">
+                                    @if($item->slug)
+                                    Slug : {{ $item->slug }}
+                                    @endif
+                                </h6>
+                                <br>
+                                <br>
+                                <!-- .skills -->
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <span><b>Category</b> : {{ \App\Models\Category::where('id',$item->cat_id)->value('title') }}</span>
+
+                                        </div>
+                                        <div class="col-sm">
+
+                                            <span><b>Child Category</b> :@if( \App\Models\Category::where('id',$item->child_cat_id)->value('title'))
+                                                {{ \App\Models\Category::where('id',$item->child_cat_id)->value('title') }}
+                                                @else
+                                                <span style="color: red">None!</span>
+                                                @endif
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <span><b>Brand</b> : {{ \App\Models\Brands::where('id',$item->brand_id)->value('title') }}</span>
+                                        </div>
+                                        <div class="col-sm">
+                                            <span> <b>Stock</b> : {{ $item->stock }}</span></h2>
+                                        </div>
+                                        <div class="col-sm">
+                                            <span> <b>Vendor</b> : {{ \App\Models\User::where('id',$item->vendor_id)->value('full_name') }}</span></h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <b>Price</b> - <del>{{ $item->price }}</del> Tk
+                                        </div>
+                                        <div class="col-sm">
+                                            <b>Discount</b> - {{ $item->discount }} %
+                                        </div>
+                                        <div class="col-sm">
+                                            <b>Offer Price</b> - {{ $item->offer_price }} Tk
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <b>Size</b> - <span class="badge badge-success">{{ $item->size }}</span>
+                                        </div>
+                                        <div class="col-sm">
+                                            <b>Condition</b> - @if($item->condition == 'summar')
+                                            <span class="badge badge-primary">Summer</span>
+                                            @elseif($item->condition == 'winter')
+                                            <span class="badge badge-info">Winter</span>
+                                            @elseif($item->condition == 'new')
+                                             <span class="badge badge-success">New</span>
+                                            @else
+                                            <span class="badge badge-brand">Popular</span>
+                                            @endif
+                                        </div>
+                                        <div class="col-sm">
+                                            <b>Status</b>  @if($item->status == 'Active')
+                                            <span class="badge badge-primary">Active</span>
+                                            @else($item->status == 'Inactive')
+                                            <span class="badge badge-info">Inactive</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <h4>Summary</h4><br>
+                                            <p>{{ $item->summary }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <h4>Description</h4><br>
+                                            <p>{{ $item->description }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                
+                                <!-- /.skills -->
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
+
+
+
+                    <br>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Modal body -->
+
+        </div>
+    </div>
+    @endforeach
     <script type="text/javascript">
-
-         var popupViews = document.querySelectorAll('.popup-view');
+        var popupViews = document.querySelectorAll('.popup-view');
         var popupBtns = document.querySelectorAll('.popup-btn');
         var closeBtns = document.querySelectorAll('.close-btn');
-    
+
         //javascript for quick view button
-        var popup = function(popupClick){
-          popupViews[popupClick].classList.add('active');
+        var popup = function(popupClick) {
+            popupViews[popupClick].classList.add('active');
         }
-    
+
         popupBtns.forEach((popupBtn, i) => {
-          popupBtn.addEventListener("click", () => {
-            popup(i);
-          });
+            popupBtn.addEventListener("click", () => {
+                popup(i);
+            });
         });
-    
+
         //javascript for close button
         closeBtns.forEach((closeBtn) => {
-          closeBtn.addEventListener("click", () => {
-            popupViews.forEach((popupView) => {
-              popupView.classList.remove('active');
+            closeBtn.addEventListener("click", () => {
+                popupViews.forEach((popupView) => {
+                    popupView.classList.remove('active');
+                });
             });
-          });
         });
 
 

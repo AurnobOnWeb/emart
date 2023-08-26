@@ -47,7 +47,7 @@ class BrandController extends Controller
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'title'=>'required',
+            'title'=>'required|unique:brands,title',
             'image'=>'required|mimes:jpeg,png,jpg|file|max:2048',
             'status'=>'required',
         ]);
@@ -112,28 +112,32 @@ class BrandController extends Controller
     public function update(Request $request, $id)
     {
         $brand = Brands::find($id);
-
-        $validate = $request->validate([
-            'title'=>'required',
-            'image'=>'nullable|mimes:jpeg,png,jpg|file|max:2048',
-            'status'=>'required',
-        ]);
-        $data = $request->all();
-        $image =$request->image;
-        if($image){
-            $imageName = time().'.'.$image->getClientOriginalExtension();
-            $request->image->move('backend/assets/images', $imageName);
-            $data['photo'] =$imageName;
-        }
-
-        
-        $status = $brand->fill($data)->save();
-        if($status){
-           return redirect()->route('brand.index')->with('massage', 'Brand successfully updated');
+        if($brand){
+            $validate = $request->validate([
+                'title'=>'required|exists:brands,title',
+                'image'=>'nullable|mimes:jpeg,png,jpg|file|max:2048',
+                'status'=>'required',
+            ]);
+            $data = $request->all();
+            $image =$request->image;
+            if($image){
+                $imageName = time().'.'.$image->getClientOriginalExtension();
+                $request->image->move('backend/assets/images', $imageName);
+                $data['photo'] =$imageName;
+            }
+    
+            
+            $status = $brand->fill($data)->save();
+            if($status){
+               return redirect()->route('brand.index')->with('massage', 'Brand successfully updated');
+            }else{
+               return redirect()->back()->with('message','Something went Wrong');
+    
+            }
         }else{
-           return redirect()->back()->with('message','Something went Wrpng');
-
+            return redirect()->back()->with('message','Data Not found');
         }
+      
 
     }
 
